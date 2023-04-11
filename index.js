@@ -2,13 +2,17 @@ const express = require('express');
 const app = express();
 const port = 5000;
 
-const routerAkunToko = require('./routes/akuntoko')
+// routers
+const routerAkunToko = require('./routes/akuntoko');
+const routerStokBarang = require('./routes/stokBarang');
 
 // Untuk menerima req.body
-app.use(express.json())
-app.use(express.urlencoded({ extended:true }))
+app.use(express.json());
+app.use(express.urlencoded({ extended:true }));
 
-app.use(routerAkunToko)
+// call router
+app.use(routerAkunToko);
+app.use(routerStokBarang);
 
 app.listen(port,() => {
     console.log(`Server Berjalan Pada Port ${port}`);
