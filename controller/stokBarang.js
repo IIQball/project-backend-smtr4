@@ -13,6 +13,18 @@ module.exports = {
             else res.send(data);
         });
     },
+    getStokToko : (req,res)=>{
+        const dbquery = "SELECT * FROM stok_barang";
+        connection.query(dbquery,(err,data)=>{
+            if (err){
+                console.log("error : ", err);
+                res.status(500).send({
+                    message : err.message || "Terjadi error saat GET data"
+                });
+            }
+            else res.send(data);
+        });
+    },
     getByID : (req,res)=>{
         const idProduk = req.params.id;
         const dbquery = `SELECT * FROM stok_barang WHERE id_produk = '${idProduk}'`;
