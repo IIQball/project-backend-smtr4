@@ -1,8 +1,8 @@
 const connection = require('../db/db.js')
 
 module.exports = {
-    getAkunToko : (req,res) => {
-        const qstring = "SELECT * FROM akuntoko";
+    getlistbarang : (req,res) => {
+        const qstring = "SELECT * FROM listbarang";
         connection.query(qstring, (err,data) => {
             if (err) {
                 console.log("error: ", err);
@@ -13,8 +13,8 @@ module.exports = {
             else res.send(data)
         });
     },
-    getAkunTokoById : (req,res) => {
-        const qstring = `SELECT * FROM akuntoko WHERE id = '${req.params.id}'`;
+    getlistbarangbyId : (req,res) => {
+        const qstring = `SELECT * FROM listbarang WHERE id = '${req.params.id}'`;
         connection.query(qstring, (err,data) => {
             if (err) {
                 console.log("error: ", err);
@@ -25,9 +25,9 @@ module.exports = {
             else res.send(data)
         });
     },
-    insertAkunToko : (req,res) => {
-        const akuntokoBaru = req.body;
-        connection.query("INSERT INTO akuntoko SET ? ", akuntokoBaru,(err) => {
+    insertlistbarang : (req,res) => {
+        const listbarangBaru = req.body;
+        connection.query("INSERT INTO listbarang SET ? ", listbarangBaru,(err) => {
             if (err) {
                 console.log("error: ",err);
                 res.status(500).send({
@@ -35,15 +35,15 @@ module.exports = {
                 });
             }
             else{
-                res.send(akuntokoBaru)
+                res.send(listbarangBaru)
             }
         });
     },
-    updateAkunToko : (req,res) => {
+    updatelistbarang : (req,res) => {
         const id = req.params.id;
-        const AkunToko = req.body;
-        const qstring = `UPDATE akuntoko
-                        SET nama_toko = '${AkunToko.nama_toko}', username = '${AkunToko.username}', password = '${AkunToko.password}'
+        const listbarang = req.body;
+        const qstring = `UPDATE listbarang
+                        SET nama_barang = '${listbarang.nama_barang}', kategori = '${listbarang.kategori}', harga_barang = '${listbarang.harga_barang}'
                         WHERE id = '${id}'`
         connection.query(qstring, (err,data) => {
             if(err) {
@@ -53,30 +53,30 @@ module.exports = {
             }
             else if(data.affectedRows == 0){
                 res.status(404).send({
-                    message: `Not found akuntoko with id ${id}.`
+                    message: `Not found listbarang with id ${id}.`
                 });
             }
             else {
-                console.log("update akuntoko : ", {id: id, ...AkunToko});
-                res.send({id: id, ...AkunToko});
+                console.log("update listbarang : ", {id: id, ...listbarang});
+                res.send({id: id, ...listbarang});
             }     
         })
     },
-    deleteAkunToko : (req,res) => {
+    deletelistbarang : (req,res) => {
         const id = req.params.id
-        const qstring = `DELETE FROM akuntoko WHERE id = '${id}'`
+        const qstring = `DELETE FROM listbarang WHERE id = '${id}'`
         connection.query(qstring, (err, data) => {
             if (err) {
                 res.status(500).send({
-                    message: "Error deleting akuntoko with id" + id
+                    message: "Error deleting listbarang with id" + id
                 });
             }
             else if (data.affectedRows == 0) {
                 res.status(404).send({
-                    message: `Not found akuntoko with id ${id}.`
+                    message: `Not found listbarang with id ${id}.`
                 });
             }
-            else res.send(`Akun Toko dengan id = ${id} telah terhapus`)
+            else res.send(`listbarang dengan id = ${id} telah terhapus`)
         });
     }
 }
