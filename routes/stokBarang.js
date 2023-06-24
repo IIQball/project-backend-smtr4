@@ -2,7 +2,6 @@ const express = require('express');
 const routerStokBarang = express.Router();
 const ctrStokBarang = require('../controller/stokBarang')
 
-routerStokBarang.get('/stok-barang', ctrStokBarang.getStokBarang);
-routerStokBarang.get('/stok-barang/:idToko', ctrStokBarang.getStokBarang);
+routerStokBarang.get('/:idUser/stok-barang', ctrStokBarang.getAllStock);
 
 module.exports = routerStokBarang;

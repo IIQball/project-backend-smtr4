@@ -25,23 +25,29 @@ create table data_barang(
     gambar char(30),
     ukuran char(5),
     idToko int,
-    foreign key (idToko) references akun_toko(idToko)
+    idUser int,
+    foreign key (idToko) references akun_toko(idToko),
+    foreign key (idUser) references user(idUser)
 );
 
 create table stok_barang(
+    idUser int,
 	idToko int,
     kodeBarang char(20),
     stok int,
     foreign key (idToko) references akun_toko(idToko),
+    foreign key (idUser) references user(idUser),
     foreign key (kodeBarang) references data_barang(kodeBarang)
 );
 
 create table transaksi(
 	nomorStruk char(20),
     idToko int,
+    idUser int,
     kodeBarang char(20),
     qty int,
     tanggal datetime,
+    foreign key (idUser) references user(idUser),
     foreign key (idToko) references akun_toko(idToko),
     foreign key (kodeBarang) references data_barang(kodeBarang)
 );
