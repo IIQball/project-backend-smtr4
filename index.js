@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 5000;
+const cors = require('cors');
 
 // routers
 const routerAkunToko = require('./routes/akuntoko');
@@ -12,7 +13,7 @@ const routerUser = require('./routes/userlogin');
 // Untuk menerima req.body
 app.use(express.json());
 app.use(express.urlencoded({ extended:true }));
-
+app.use(cors());
 // call router
 app.use(routerAkunToko);
 app.use(routerStokBarang);
