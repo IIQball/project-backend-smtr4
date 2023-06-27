@@ -19,7 +19,7 @@ module.exports = {
                 bcrypt.compareSync(password, data[0].password)
             
                 req.session.isAuhenticated = true;
-                res.send({status :"Login Sukses" })
+                res.send({status : "Login Sukses" })
                 
             }else {
                 res.send("Anda Belum Terdaftar")
