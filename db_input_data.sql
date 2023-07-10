@@ -3,7 +3,7 @@ values ('distrOutfit', 'distrOutfit', '081234567812', 'distroutfit@gmail.com');
 
 insert into akun_toko (idUser, namaToko, username, password)
 values (1,'distrOutfit', 'distrOutfit01', 'passwordDistrOutfit'),
-values (1,'distrOutfit02', 'distrOutfit02', 'passwordDistrOutfit');
+       (1,'distrOutfit02', 'distrOutfit02', 'passwordDistrOutfit');
 
 insert into data_barang (kodeBarang, namaBarang, harga, gambar, ukuran, idToko, idUser)
 values ('P001', 'Kaos Polos', 50000, 'kaos_polos.jpg', 'M', 1, 1),
