@@ -51,6 +51,7 @@ module.exports = {
 
     //  },
     insertTransaksi: (req, res) => {
+    const idUser = req.params.idUser;
     const data = req.body.data;
     let query = "INSERT INTO transaksi (nomorStruk, idToko, idUser, kodeBarang, qty, tanggal) VALUES ";
     const currentDate = new Date();
@@ -58,7 +59,7 @@ module.exports = {
     const values = data
     .map(
       (item) =>
-        `('TK1-5JUN23-1', 1, 1, '${item.kodeBarang}', '${item.stok}', '${currentTime}')`
+        `('TK1-5JUN23-1', '1', '1', '${item.kodeBarang}', '${item.stok}', '${currentTime}')`
     )
     .join(",");
 
