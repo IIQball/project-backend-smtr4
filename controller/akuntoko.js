@@ -1,4 +1,5 @@
 const connection = require('../db/db.js')
+const bcrypt = require("bcrypt")
 
 module.exports = {
     getAkunToko : (req,res) => {
