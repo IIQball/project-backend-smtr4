@@ -4,9 +4,10 @@ const ctrtransaksi = require('../controller/transaksi')
 
 // transaksi
 routertransaksi.get('/transaksi',ctrtransaksi.getTransaksi)
-routertransaksi.get('/transaksi/:id',ctrtransaksi.getTransaksibyId)
+routertransaksi.get('/transaksi/:nomorStruk',ctrtransaksi.getTransaksiBynomorStruk)
 routertransaksi.post('/transaksi',ctrtransaksi.insertTransaksi)
-routertransaksi.put('/transaksi/:id', ctrtransaksi.updateTransaksi)
-routertransaksi.delete('/transaksi/:id', ctrtransaksi.deleteTransaksi)
+// routertransaksi.put('/transaksi/:nomorStruk', ctrtransaksi.updateTransaksiBynomorStruk)
+routertransaksi.put('/transaksi/:kodeBarang', ctrtransaksi.kurangiStok)
+routertransaksi.delete('/transaksi/:nomorStruk', ctrtransaksi.deleteTransaksiBynomorStruk)
 
 module.exports = routertransaksi;

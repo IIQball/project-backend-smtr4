@@ -11,6 +11,7 @@ const routerStokBarang = require('./routes/stokBarang');
 const routertransaksi = require('./routes/transaksi');
 const routerlistbarang = require('./routes/listbarang');
 const routerUser = require('./routes/userlogin');
+const routerKasir = require('./routes/kasirlogin');
 
 // Untuk menerima req.body
 app.use(express.json());
@@ -18,7 +19,7 @@ app.use(express.urlencoded({ extended:true }));
 app.use(cors({origin : "http://localhost:5173", credentials : true}));
 
 app.use(session({
-    secret: 'sayamakan123',
+    secret: 'akuganteng',
     resave: false,
     saveUninitialized: false,
     cookie : {
@@ -33,6 +34,7 @@ app.use(routerStokBarang);
 app.use(routertransaksi);
 app.use(routerlistbarang);
 app.use(routerUser);
+app.use(routerKasir);
 
 app.listen(port,() => {
     console.log(`Server Berjalan Pada Port ${port}`);
