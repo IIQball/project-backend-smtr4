@@ -3,7 +3,8 @@ const bcrypt = require("bcrypt");
 
 module.exports = {
   getToko: (req, res) => {
-    const qstring = "SELECT * FROM akun_toko";
+    const idUser = req.params.idUser;
+    const qstring = `SELECT * FROM akun_toko where idUser = ${idUser}`;
     connection.query(qstring, (err, data) => {
       if (err) {
         console.log("error: ", err);

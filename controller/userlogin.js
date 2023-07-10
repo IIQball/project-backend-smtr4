@@ -19,7 +19,8 @@ module.exports = {
                 bcrypt.compareSync(password, data[0].password)
             
                 req.session.isAuhenticated = true;
-                res.send({status : "Login Sukses" })
+                const idUser = data[0].idUser;
+                res.send({'idUser' : idUser});
                 
             }else {
                 res.send("Anda Belum Terdaftar")
@@ -28,11 +29,10 @@ module.exports = {
     },
     register: (req,res) => {
         const { username, password ,noHp, email} = req.body;
-        const hashedPassword = bcrypt.hashSync(password, 10);
 
         const query = 'INSERT INTO user (username, password, noHp, email) VALUES (?, ?, ?, ?)'
 
-        connection.query(query, [username, hashedPassword, noHp, email], (err) => {
+        connection.query(query, [username, password, noHp, email], (err) => {
             if (err) {
                 console.log("error: ", err);
                 res.status(500).send({
@@ -40,7 +40,7 @@ module.exports = {
                 });
             }
             else 
-                res.send({ username, hashedPassword , noHp, email})
+                res.send({ username, password , noHp, email})
         }); 
     },
     logout: (req, res) => {
