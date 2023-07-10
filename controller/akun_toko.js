@@ -1,7 +1,5 @@
-
 const connection = require("../db/db.js");
-const bcrypt = require("bcrypt");
-
+const bcrypt = require("bcrypt");  
 
 module.exports = {
   getToko: (req, res) => {
@@ -16,16 +14,34 @@ module.exports = {
       else res.send(data)
     });
   },
-  tambahToko: (req, res) => {
-    const barangBaru = req.body;
-    connection.query("insert into akun_toko set ?", barangBaru, (err) => {
+  getTokoById : (req,res) => {
+    const qstring = `SELECT * FROM akun_toko WHERE id = '${req.params.idToko}'`;
+    connection.query(qstring, (err,data) => {
+        if (err) {
+            console.log("error: ", err);
+            res.status(500).send({
+                message : err.message || "Terjadi kesalahan saat ke GET data"
+            });
+        }
+        else res.send(data)
+    });
+},
+  editToko : (req, res) => {
+    const id = req.params.id;
+    const akuntoko = req.body;
+    console.log(id)
+    const qstring = `UPDATE akun_toko SET namaToko = '${akuntoko.namaToko}', username = '${akuntoko.username}', password = '${akuntoko.password}' WHERE idToko = '${id}'`;
+    connection.query( qstring, (err, data) => {
       if (err) {
-        console.log("error:", err);
         res.status(500).send({
-          message: err.message || "Terjadi kesalahan saaat insert data",
+          message: err.message || "Terjadi kesalahan saaat UPDATE with idToko" + idToko,
         });
+      } else if (data.affectedRows == 0) {
+        res.status(404).send({
+            message: `Not Found akun_toko with idToko ${id}`
+        })
       } else {
-        res.send(barangBaru);
+        res.send({ id: id, ...akuntoko })
       }
     });
   },
@@ -47,11 +63,12 @@ module.exports = {
     });
   },
   register: (req, res) => {
-    const {namaToko, username, password} = req.body;
+    const {namaToko, username, password,idUser} = req.body;
     const hashedPassword = bcrypt.hashSync(password, 10);
 
-    const query = 'INSERT INTO akun_toko (namaToko, username, password) VALUES (?,?,?)'
-    connection.query(query, [namaToko, username, hashedPassword], (err) => {
+    console.log(req.body)
+    const query = 'INSERT INTO akun_toko (idUser,namaToko, username, password) VALUES (?,?,?,?)'
+    connection.query(query, [idUser,namaToko, username, hashedPassword], (err) => {
       if (err) {
         console.log("error: ", err);
         res.status(500).send({
@@ -62,28 +79,4 @@ module.exports = {
           res.send({namaToko, username, hashedPassword})
     });
   },
-  login: (req, res) => {
-    const username = req.body.username
-    const password = req.body.password
-
-    const qstring = `SELECT * FROM akun_toko WHERE username = "${username}"`;
-    console.log(req.body)
-    connection.query(qstring,(err,data) => {
-        if (err) {
-            console.log("error: ", err);
-            res.status(500).send({
-                message: err.message || "Terjadi kesalahan saat get data"
-            });
-        }
-        else if(data.length > 0 ){
-            bcrypt.compareSync(password, data[0].password)
-        
-            req.session.isAuhenticated = true;
-            res.send({status : "Login Sukses" })
-            
-        }else {
-            res.send("Anda Belum Terdaftar")
-        }
-    });
-},
 };

@@ -13,6 +13,8 @@ const routerlistbarang = require('./routes/listbarang');
 const routerUser = require('./routes/userlogin');
 const routerKasir = require('./routes/kasirlogin');
 
+const routerToko = require('./routes/akun_toko')
+
 // Untuk menerima req.body
 app.use(express.json());
 app.use(express.urlencoded({ extended:true }));
@@ -34,7 +36,10 @@ app.use(routerStokBarang);
 app.use(routertransaksi);
 app.use(routerlistbarang);
 app.use(routerUser);
+
 app.use(routerKasir);
+
+app.use(routerToko);
 
 app.listen(port,() => {
     console.log(`Server Berjalan Pada Port ${port}`);
