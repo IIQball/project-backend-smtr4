@@ -1,82 +1,89 @@
-const connection = require('../db/db.js')
+
+const connection = require("../db/db.js");
+const bcrypt = require("bcrypt");
+
 
 module.exports = {
-    getAkunToko : (req,res) => {
-        const qstring = "SELECT * FROM akuntoko";
-        connection.query(qstring, (err,data) => {
-            if (err) {
-                console.log("error: ", err);
-                res.status(500).send({
-                    message : err.message || "Terjadi kesalahan saat ke GET data"
-                });
-            }
-            else res.send(data)
+  getToko: (req, res) => {
+    const qstring = "SELECT * FROM akun_toko";
+    connection.query(qstring, (err, data) => {
+      if (err) {
+        console.log("error: ", err);
+        res.status(500).send({
+          message: err.message || "Terjadi kesalahan saat get data"
         });
-    },
-    getAkunTokoById : (req,res) => {
-        const qstring = `SELECT * FROM akuntoko WHERE id = '${req.params.id}'`;
-        connection.query(qstring, (err,data) => {
-            if (err) {
-                console.log("error: ", err);
-                res.status(500).send({
-                    message : err.message || "Terjadi kesalahan saat ke GET data"
-                });
-            }
-            else res.send(data)
+      } 
+      else res.send(data)
+    });
+  },
+  tambahToko: (req, res) => {
+    const barangBaru = req.body;
+    connection.query("insert into akun_toko set ?", barangBaru, (err) => {
+      if (err) {
+        console.log("error:", err);
+        res.status(500).send({
+          message: err.message || "Terjadi kesalahan saaat insert data",
         });
-    },
-    insertAkunToko : (req,res) => {
-        const akuntokoBaru = req.body;
-        connection.query("INSERT INTO akuntoko SET ? ", akuntokoBaru,(err) => {
-            if (err) {
-                console.log("error: ",err);
-                res.status(500).send({
-                    message : err.message || "Terjadi kesalahan saat Insert data"
-                });
-            }
-            else{
-                res.send(akuntokoBaru)
-            }
+      } else {
+        res.send(barangBaru);
+      }
+    });
+  },
+  hapusToko: (req, res) => {
+    const id = req.params.id;
+    const qstring = `DELETE FROM akun_toko WHERE idToko = '${id}'`;
+    connection.query(qstring, (err, data) => {
+      if (err) {
+        res.status(500).send({
+          message: "error deleteing barang with id " + id,
         });
-    },
-    updateAkunToko : (req,res) => {
-        const id = req.params.id;
-        const AkunToko = req.body;
-        const qstring = `UPDATE akuntoko
-                        SET nama_toko = '${AkunToko.nama_toko}', username = '${AkunToko.username}', password = '${AkunToko.password}'
-                        WHERE id = '${id}'`
-        connection.query(qstring, (err,data) => {
-            if(err) {
-                res.status(500).send({
-                    message: err.message
-                });
-            }
-            else if(data.affectedRows == 0){
-                res.status(404).send({
-                    message: `Not found akuntoko with id ${id}.`
-                });
-            }
-            else {
-                console.log("update akuntoko : ", {id: id, ...AkunToko});
-                res.send({id: id, ...AkunToko});
-            }     
-        })
-    },
-    deleteAkunToko : (req,res) => {
-        const id = req.params.id
-        const qstring = `DELETE FROM akuntoko WHERE id = '${id}'`
-        connection.query(qstring, (err, data) => {
-            if (err) {
-                res.status(500).send({
-                    message: "Error deleting akuntoko with id" + id
-                });
-            }
-            else if (data.affectedRows == 0) {
-                res.status(404).send({
-                    message: `Not found akuntoko with id ${id}.`
-                });
-            }
-            else res.send(`Akun Toko dengan id = ${id} telah terhapus`)
+      } else if (data.affectedRows == 0) {
+        res.status(404).send({
+          message: `not found barang with id ${id}`,
         });
-    }
-}
+      } else {
+        res.send(`barang dengan id = ${id} telah dihapus`);
+      }
+    });
+  },
+  register: (req, res) => {
+    const {namaToko, username, password} = req.body;
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
+    const query = 'INSERT INTO akun_toko (namaToko, username, password) VALUES (?,?,?)'
+    connection.query(query, [namaToko, username, hashedPassword], (err) => {
+      if (err) {
+        console.log("error: ", err);
+        res.status(500).send({
+          message: err.message || "register gagal"
+        });
+      }
+      else
+          res.send({namaToko, username, hashedPassword})
+    });
+  },
+  login: (req, res) => {
+    const username = req.body.username
+    const password = req.body.password
+
+    const qstring = `SELECT * FROM akun_toko WHERE username = "${username}"`;
+    console.log(req.body)
+    connection.query(qstring,(err,data) => {
+        if (err) {
+            console.log("error: ", err);
+            res.status(500).send({
+                message: err.message || "Terjadi kesalahan saat get data"
+            });
+        }
+        else if(data.length > 0 ){
+            bcrypt.compareSync(password, data[0].password)
+        
+            req.session.isAuhenticated = true;
+            res.send({status : "Login Sukses" })
+            
+        }else {
+            res.send("Anda Belum Terdaftar")
+        }
+    });
+},
+};
