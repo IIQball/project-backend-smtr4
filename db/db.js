@@ -5,8 +5,8 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     port : '3306',
-    password : 'root',
-    database: 'db_toko'
+    password : '',
+    database: 'backend'
 });
 
 // open the Mysql connection
