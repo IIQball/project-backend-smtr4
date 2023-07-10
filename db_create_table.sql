@@ -27,9 +27,7 @@ create table data_barang(
     idToko int,
     idUser int,
     foreign key (idToko) references akun_toko(idToko),
-    foreign key (idUser) references user(
-        
-    )
+    foreign key (idUser) references user(idUser)
 );
 
 create table stok_barang(
