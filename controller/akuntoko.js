@@ -48,10 +48,9 @@ module.exports = {
   },
   register: (req, res) => {
     const {namaToko, username, password} = req.body;
-    const hashedPassword = bcrypt.hashSync(password, 10);
-
-    const query = 'INSERT INTO akun_toko (namaToko, username, password) VALUES (?,?,?)'
-    connection.query(query, [namaToko, username, hashedPassword], (err) => {
+    const idUser = req.params.idUser;
+    const query = 'INSERT INTO akun_toko (idUser, namaToko, username, password) VALUES (?,?,?,?)'
+    connection.query(query, [idUser,namaToko, username, password], (err) => {
       if (err) {
         console.log("error: ", err);
         res.status(500).send({
@@ -59,7 +58,7 @@ module.exports = {
         });
       }
       else
-          res.send({namaToko, username, hashedPassword})
+          res.send({namaToko, username, password})
     });
   },
   login: (req, res) => {

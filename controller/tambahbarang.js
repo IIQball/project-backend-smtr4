@@ -28,10 +28,12 @@ module.exports = {
     });
   },
   tambahBrg: (req, res) => {
-      const kodeBarang = req.body.kodeBarang
-      const namaBarang = req.body.namaBarang
-      const harga = req.body.harga
-      const ukuran = req.body.ukuran
+      const idUser = req.params.idUser;
+      const idToko = req.body.idToko;
+      const kodeBarang = req.body.kodeBarang;
+      const namaBarang = req.body.namaBarang;
+      const harga = req.body.harga;
+      const ukuran = req.body.ukuran;
 
        // upload Gambar
        const gambar = req.files.gambar
@@ -51,7 +53,7 @@ module.exports = {
       gambar.mv(`./public/images/${gambarNama}`, async(err) =>{
           if (err) return res.status(500).json({msg : err.message})
           try {
-            connection.query(`insert into data_barang set kodeBarang = '${kodeBarang}', namaBarang = '${namaBarang}', harga = '${harga}', gambar = '${gambarNama}',ukuran = '${ukuran}',url ='${url}'`,(err,data) => {
+            connection.query(`insert into data_barang set idUser = ${idUser}, idToko = ${idToko}, kodeBarang = '${kodeBarang}', namaBarang = '${namaBarang}', harga = '${harga}', gambar = '${gambarNama}',ukuran = '${ukuran}',url ='${url}'`,(err,data) => {
               if(err) {
                 console.log('error',err)
                 res.status(500).send({
