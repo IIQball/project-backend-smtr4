@@ -5,7 +5,7 @@ const ctrlToko = require('../controller/akuntoko')
 routerToko.get('/toko',ctrlToko.getToko)
 routerToko.post('/toko',ctrlToko.tambahToko)
 routerToko.post('/:idUser/akuntoko/register',ctrlToko.register)
-routerToko.post('/akuntoko/login',ctrlToko.login)
+routerToko.post('/:idUser/akuntoko/login',ctrlToko.loginakuntoko)
 routerToko.delete('/toko/:id',ctrlToko.hapusToko)
 
 module.exports = routerToko

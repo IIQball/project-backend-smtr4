@@ -3,7 +3,8 @@ const path = require('path')
 
 module.exports = {
   getBrg: (req, res) => {
-    const qstring = "SELECT * FROM data_barang";
+    const idUser = req.params.idUser;
+    const qstring = `SELECT * FROM data_barang WHERE idUser = ${idUser}`;
     connection.query(qstring, (err, data) => {
       if (err) {
         console.log("error: ", err);

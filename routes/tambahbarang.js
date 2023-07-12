@@ -2,7 +2,7 @@ const express = require('express')
 const routerBrg = express.Router()
 const ctrlBrg = require('../controller/tambahbarang')
 
-routerBrg.get('/barang',ctrlBrg.getBrg)
+routerBrg.get('/:idUser/barang',ctrlBrg.getBrg)
 routerBrg.get('/barang/:kodeBarang',ctrlBrg.getByKodeBrg)
 routerBrg.post('/:idUser/barang',ctrlBrg.tambahBrg)
 routerBrg.put('/barang/:kode',ctrlBrg.updateBrg)

@@ -1,5 +1,5 @@
 const connection = require('../db/db.js');
-const bcrypt = require ('bcrypt');
+// const bcrypt = require ('bcrypt');
 
 module.exports = {
     Login: (req, res) => {
@@ -15,14 +15,13 @@ module.exports = {
                     message: err.message || "Terjadi kesalahan saat get data"
                 });
             }
-            else if(data.length > 0 ){
-                bcrypt.compareSync(password, data[0].password)
-            
+            else if(data.length > 0 && password == data[0].password)
+            {
                 req.session.isAuhenticated = true;
                 const idUser = data[0].idUser;
-                res.send({'idUser' : idUser});
-                
-            }else {
+                res.send({'idUser' : idUser});   
+            }
+            else {
                 res.send("Anda Belum Terdaftar")
             }
         });

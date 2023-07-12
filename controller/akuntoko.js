@@ -61,28 +61,30 @@ module.exports = {
           res.send({namaToko, username, password})
     });
   },
-  login: (req, res) => {
-    const username = req.body.username
-    const password = req.body.password
 
-    const qstring = `SELECT * FROM akun_toko WHERE username = "${username}"`;
-    console.log(req.body)
-    connection.query(qstring,(err,data) => {
-        if (err) {
-            console.log("error: ", err);
-            res.status(500).send({
-                message: err.message || "Terjadi kesalahan saat get data"
-            });
-        }
-        else if(data.length > 0 ){
-            bcrypt.compareSync(password, data[0].password)
-        
-            req.session.isAuhenticated = true;
-            res.send({status : "Login Sukses" })
-            
-        }else {
-            res.send("Anda Belum Terdaftar")
-        }
-    });
+loginakuntoko: (req, res) => {
+  const username = req.body.username
+  const password = req.body.password
+
+  const qstring = `SELECT * FROM akun_toko WHERE username = '${username}'`;
+  console.log(req.body)
+  connection.query(qstring,(err,data) => {
+    console.log(data)
+      if (err) {
+          console.log("error: ", err);
+          res.status(500).send({
+              message: err.message || "Terjadi kesalahan saat get data"
+          });
+      }
+      else if(data.length > 0 && password == data[0].password)
+      {
+          req.session.isAuhenticated = true;
+          const idUser = data[0].idUser;
+          res.status(200).send({'idUser' : idUser});   
+      }
+      else {
+          res.status(404).send("Anda Belum Terdaftar")
+      }
+  });
 },
 };
