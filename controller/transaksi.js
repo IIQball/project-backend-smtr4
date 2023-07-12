@@ -59,7 +59,7 @@ module.exports = {
     const values = data
     .map(
       (item) =>
-        `('TK1-5JUN23-1', '${item.idToko}', '${idUser}', '${item.kodeBarang}', '${item.stok}', '${currentTime}')`
+        `('${Math.random()}', '${item.idToko}', '${idUser}', '${item.kodeBarang}', '${item.stok}', '${currentTime}')`
     )
     .join(",");
 
